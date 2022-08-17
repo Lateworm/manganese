@@ -34,3 +34,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Jeeeesus Christ what is wrong with this OS?
+.DS_Store
