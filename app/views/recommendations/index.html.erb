@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Recommendations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th><%= link_to('Album', albums_path) %></th>
+      <th><%= link_to('Artist', artists_path) %></th>
+      <th>Submitted Date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @recommendations.each do |recommendation| %>
+      <tr>
+        <% # TODO: link to a page about the user %>
+        <td><%= recommendation.user.name %></td>
+        <td><%= link_to(recommendation.album.name, album_path(recommendation.album)) %></td>
+        <td><%= link_to(recommendation.album.artist.name, artist_path(recommendation.album.artist)) %></td>
+        <td><%= recommendation.created_at.strftime('%Y-%m-%d') %></td>
+        <td><%= link_to 'Show', recommendation %></td>
+
+        <% if current_user&.role == 'admin' %>
+          <% # TODO: users should be able to edit their own recommendations %>
+          <td><%= link_to 'Edit', edit_recommendation_path(recommendation) %></td>
+          <td><%= link_to('Destroy', recommendation, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to('New Recommendation', new_recommendation_path) if user_signed_in? %>

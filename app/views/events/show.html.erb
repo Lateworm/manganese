@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @event.name %>
+</p>
+
+<p>
+  <strong>Started at:</strong>
+  <%= @event.started_at %>
+</p>
+
+<p><strong>Plays</strong></p>
+<ul>
+  <% @event.plays.each do |play| %>
+    <li><%= link_to(play.album.artist.name, play.album.artist) %> - <%= link_to(play.album.name, play.album) %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

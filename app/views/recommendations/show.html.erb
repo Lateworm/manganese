@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Recommendation</h1>
+
+<p>
+  <strong>User:</strong>
+  <% #TODO: link to user %>
+  <%= @recommendation.user.name %>
+</p>
+
+<p>
+  <strong>Album:</strong>
+  <%= link_to(@recommendation.album.name, album_path(@recommendation.album)) %>
+</p>
+
+<p>
+  <strong>Artist:</strong>
+  <%= link_to(@recommendation.album.artist.name, artist_path(@recommendation.album.artist)) %>
+</p>
+
+<%= link_to('Edit |', edit_recommendation_path(@recommendation)) if current_user&.role == 'admin' %>
+<%= link_to 'Back to Recommendations', recommendations_path %>

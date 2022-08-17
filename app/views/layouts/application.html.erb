@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Manganese</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
+    <%= link_to("Curt's Album Party | ", root_path) %>
+
+    <%= link_to('Sign Up | ', new_user_registration_path) unless user_signed_in? %>
+    <%= link_to('Sign In | ', new_user_session_path) unless user_signed_in? %>
+
+    <%= link_to(current_user.name + ' | ', edit_user_registration_path) if user_signed_in? %>
+    <%= link_to('Sign Out | ', destroy_user_session_path, method: :delete, class: 'danger') if user_signed_in? %>
+    <hr>
+
+    <%= yield %>
+  </body>
+</html>

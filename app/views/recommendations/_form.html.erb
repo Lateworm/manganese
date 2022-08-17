@@ -1,0 +1,27 @@
+<%= form_with(model: recommendation) do |form| %>
+  <% if recommendation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(recommendation.errors.count, "error") %> prohibited this recommendation from being saved:</h2>
+
+      <ul>
+        <% recommendation.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label(:album_name) %>
+    <%= form.text_field(:album_name, :value => recommendation&.album&.name) %>
+  </div>
+
+  <div class="field">
+    <%= form.label(:artist_name) %>
+    <%= form.text_field(:artist_name, :value => recommendation&.album&.artist&.name) %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

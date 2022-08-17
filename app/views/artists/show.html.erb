@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Artist</h1>
+
+<p>
+  <strong>Name:</strong>
+  <%= @artist.name %>
+</p>
+
+<strong>Recommended Albums:</strong>
+<ul>
+  <% @artist.albums.each do |album| %>
+    <li><%= link_to(album.name, album) %></li>
+  <% end %>
+</ul>
+
+<%= link_to('Edit | ', edit_artist_path(@artist)) if current_user&.role == 'admin' %>
+<%= link_to('Back to Artists', artists_path) %>

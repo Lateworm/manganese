@@ -1,0 +1,17 @@
+<p id="notice"><%= notice %></p>
+
+
+<h1>Play</h1>
+
+<p>
+  <strong>Album:</strong>
+  <%= link_to(@play.album.name, @play.album) %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= link_to(@play.event.name, @play.event) %>
+</p>
+
+<%= link_to 'Edit', edit_play_path(@play) %> |
+<%= link_to 'Back', plays_path %>

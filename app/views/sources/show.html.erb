@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Url:</strong>
+  <%= link_to(@source.url, @source.url, target: :_blank) %>
+</p>
+
+<p>
+  <strong>Album:</strong>
+  <%= link_to(@source.album.name, album_path(@source.album)) %>
+</p>
+
+<p>
+  <strong>Service:</strong>
+  <%= @source.service.name %>
+</p>
+
+<%= link_to('Edit | ', edit_source_path(@source)) if current_user&.role == 'admin' %>
+<%= link_to('Back', sources_path) %>

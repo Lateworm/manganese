@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Album</h1>
+
+<p>
+  <strong>Name:</strong>
+  <%= @album.name %>
+</p>
+
+<p>
+  <strong>Artist:</strong>
+  <%= link_to(@album.artist.name, artist_path(@album.artist)) %>
+</p>
+
+<p><strong>Sources</strong></p>
+<ul>
+  <% @album.sources.each do |source| %>
+    <li><%= link_to(source.service.name, source.url, target: :_blank) %></li>
+  <% end %>
+</ul>
+
+<p><strong>Recommended By</strong></p>
+<ul>
+  <% @album.recommendations.each do |rec| %>
+    <li><%= rec.user.name %></li>
+  <% end %>
+</ul>
+
+<p><strong>Plays</strong></p>
+<ul>
+  <% @album.plays.each do |play| %>
+    <li><%= link_to(play.event.name, play.event) %></li>
+  <% end %>
+</ul>
+
+<%= link_to('Edit |', edit_album_path(@album)) if current_user&.role == 'admin' %>
+<%= link_to 'Back to Albums', albums_path %>
