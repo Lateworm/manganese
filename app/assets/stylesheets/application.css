@@ -15,9 +15,16 @@
  */
 
  body {
-  background-color: #233039;
-  color: #fcfcfc;
+  background-color: var(--c-bg);
+  color: var(--c-fg);
+  /* TODO: font-size: 16px; */
  }
 
- a, a:visited { color: #29A6BF; }
- .danger, .danger:visited { color: #F08A34; }
+ nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+ }
+
+ a, a:visited { color: var(--c-link); }
+ .danger, .danger:visited { color: var(--c-neg); }

@@ -1,27 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Manganese</title>
+    <title>Curt's Album Party</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <% # TODO: themes %>
+    <style>
+     :root {
+        --c-bg: #1E1E1E;
+        --c-fg: #E1E1E1;
+        --c-link: #9CDCFE;
+        --c-neg: #CD9178;
+      }
+    </style>
   </head>
 
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
 
-    <%= link_to("Curt's Album Party | ", root_path) %>
+    <nav>
+      <% # Navigation Menu %>
+      <div>
+        <span>Curt's Album Party</span>
+        <% unless current_page?(events_path) %>
+          <span> | </span>
+          <%= link_to('Events', events_path) %>
+        <% end %>
+        <% unless current_page?(albums_path) %>
+          <span> | </span>
+          <%= link_to('Albums', albums_path) unless current_page?(albums_path) %>
+        <% end %>
+      </div>
 
-    <%= link_to('Sign Up | ', new_user_registration_path) unless user_signed_in? %>
-    <%= link_to('Sign In | ', new_user_session_path) unless user_signed_in? %>
-
-    <%= link_to(current_user.name + ' | ', edit_user_registration_path) if user_signed_in? %>
-    <%= link_to('Sign Out | ', destroy_user_session_path, method: :delete, class: 'danger') if user_signed_in? %>
-    <hr>
+      <% # User Menu %>
+      <div>
+        <% if user_signed_in? %>
+          <%= link_to(current_user.name, edit_user_registration_path) %>
+          <span> | </span>
+          <%= link_to('Sign Out', destroy_user_session_path, method: :delete, class: 'danger') %>
+        <% else %>
+          <%= link_to('Sign Up', new_user_registration_path) %>
+          <span> | </span>
+          <%= link_to('Sign In', new_user_session_path) %>
+        <% end %>
+      </div>
+    </nav>
 
     <%= yield %>
   </body>
