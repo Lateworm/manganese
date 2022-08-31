@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Albums</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,6 +15,7 @@
     <% @artists.each do |artist| %>
       <tr>
         <td><%= artist.name %></td>
+        <td><%= artist.albums.length %></td>
         <td><%= link_to 'Show', artist %></td>
 
         <% if current_user&.role == 'admin' %>
