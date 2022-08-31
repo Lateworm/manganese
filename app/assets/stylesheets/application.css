@@ -14,17 +14,33 @@
  *= require_self
  */
 
- body {
+body {
   background-color: var(--c-bg);
   color: var(--c-fg);
   /* TODO: font-size: 16px; */
- }
+}
 
- nav {
+input, button {
+  border: 1px solid var(--c-bg-shade);
+  background-color: var(--c-bg-tint);
+  color: var(--c-fg);
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
- }
+}
 
- a, a:visited { color: var(--c-link); }
- .danger, .danger:visited { color: var(--c-neg); }
+th { text-align: initial }
+
+a, a:visited { color: var(--c-link); }
+a:hover { 
+  color: var(--c-link);
+  background-color: var(--c-bg-tint);
+}
+
+.danger, .danger:visited { color: var(--c-neg); }
