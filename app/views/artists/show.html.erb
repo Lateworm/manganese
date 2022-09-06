@@ -1,11 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Artist</h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @artist.name %>
-</p>
+<strong>Artist</strong>
+<h1><%= @artist.name %></h1>
 
 <strong>Recommended Albums:</strong>
 <ul>
@@ -13,6 +10,8 @@
     <li><%= link_to(album.name, album) %></li>
   <% end %>
 </ul>
-
-<%= link_to('Edit | ', edit_artist_path(@artist)) if current_user&.role == 'admin' %>
+<% if current_user&.role == 'admin' %>
+  <%= link_to('Edit', edit_artist_path(@artist), class: 'danger')%>
+  <span> |</span>
+<% end %>
 <%= link_to('Back to Artists', artists_path) %>

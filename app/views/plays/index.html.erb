@@ -29,4 +29,4 @@
 
 <br>
 
-<%= link_to 'New Play', new_play_path if current_user&.role == 'admin' %>
+<%= link_to('New Play', new_play_path, class: 'danger') if current_user&.role == 'admin' %>

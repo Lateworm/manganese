@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to('New Event', new_event_path) if current_user&.role == 'admin' %>
+<%= link_to('New Event', new_event_path, class: 'danger') if current_user&.role == 'admin' %>

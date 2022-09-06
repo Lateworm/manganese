@@ -1,9 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @event.name %>
-</p>
+<strong>Event</strong>
+<h1><%= @event.name %></h1>
 
 <p>
   <strong>Started at:</strong>
@@ -17,5 +15,5 @@
   <% end %>
 </ul>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to('Edit', edit_event_path(@event), class: 'danger') if current_user&.role == 'admin' %> |
+<%= link_to('Back', events_path) %>

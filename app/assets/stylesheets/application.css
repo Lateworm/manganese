@@ -52,6 +52,7 @@ a, a:visited { color: var(--c-link); }
 a:hover { 
   color: var(--c-link);
   background-color: var(--c-bg-tint);
+  border-radius: 0.25rem;
 }
 
 .danger, .danger:visited { color: var(--c-neg); }
