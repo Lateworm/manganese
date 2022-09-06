@@ -3,7 +3,17 @@ class ArtistsController < ApplicationController
 
   # GET /artists or /artists.json
   def index
-    @artists = Artist.all
+    order_clauses = {
+      'artist' => 'artists.name',
+      'artist_d' => 'artists.name DESC',
+
+    }
+
+    if artists_params['order_by'] && order_clauses[artists_params['order_by']]
+      @artists = Artist.order(order_clauses[artists_params['order_by']])
+    else
+      @artists = Artist.all
+    end
   end
 
   # GET /artists/1 or /artists/1.json
@@ -75,5 +85,9 @@ class ArtistsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def artist_params
       params.require(:artist).permit(:name)
+    end
+
+    def artists_params
+      params.permit(:order_by)
     end
 end

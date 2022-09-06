@@ -3,7 +3,18 @@ class AlbumsController < ApplicationController
 
   # GET /albums or /albums.json
   def index
-    @albums = Album.all
+    order_clauses = {
+      'artist' => 'artists.name',
+      'artist_d' => 'artists.name DESC',
+      'album' => 'albums.name',
+      'album_d' => 'albums.name DESC',
+    }
+    
+    if albums_params['order_by'] && order_clauses[albums_params['order_by']]
+      @albums = Album.joins(:artist).order(order_clauses[albums_params['order_by']])
+    else
+      @albums = Album.all
+    end
   end
 
   # GET /albums/1 or /albums/1.json
@@ -87,5 +98,9 @@ class AlbumsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def album_params
       params.require(:album).permit(:name, :artist_name)
+    end
+
+    def albums_params
+      params.permit(:order_by)
     end
 end
