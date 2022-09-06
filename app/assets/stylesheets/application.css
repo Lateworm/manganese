@@ -15,9 +15,20 @@
  */
 
 body {
+  margin: 0;
+
   background-color: var(--c-bg);
   color: var(--c-fg);
   /* TODO: font-size: 16px; */
+}
+
+nav {
+  padding: 1rem;
+  background-color: var(--c-bg-tint);
+}
+
+main {
+  padding: 1rem;
 }
 
 input, button {
@@ -44,3 +55,6 @@ a:hover {
 }
 
 .danger, .danger:visited { color: var(--c-neg); }
+
+table { border-spacing: 0; }
+tbody tr:nth-child(odd) { background-color: var(--c-bg-tint); }

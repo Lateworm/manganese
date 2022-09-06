@@ -12,31 +12,28 @@
     <% # TODO: themes %>
     <style>
      :root {
-        /* light+
-        --c-bg-shade: #DDD;
+        /* Abacab
+        --c-bg-shade: #AA9;
         --c-bg: #EEE;
         --c-bg-tint: #FFF;
 
         --c-fg: #222;
-        --c-link: #20F;
-        --c-neg: #D26; */
+        --c-link: #33C;
+        --c-neg: #C33; */
 
-        /* dark+  */
+        /* Master of Reality */
         --c-bg-shade: #111;
         --c-bg: #222;
         --c-bg-tint: #333;
 
         --c-fg: #EEE;
-        --c-link: #9DF;
-        --c-neg: #C97;
+        --c-link: #BDA;
+        --c-neg: #E6E;
       }
     </style>
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-
     <nav>
       <% # Navigation Menu %>
       <div>
@@ -65,6 +62,12 @@
       </div>
     </nav>
 
-    <%= yield %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
+    <main>
+      <%# TODO: is there a better semantic element? %>
+      <%= yield %>
+    <main>
   </body>
 </html>
