@@ -25,6 +25,7 @@ body {
 nav {
   padding: 1rem;
   background-color: var(--c-bg-tint);
+  border-bottom: 1px solid var(--c-bg-shade);
 }
 
 main {
@@ -55,7 +56,17 @@ a:hover {
   border-radius: 0.25rem;
 }
 
+h2 a:not(:hover) { text-decoration: none; }
+
 .danger, .danger:visited { color: var(--c-neg); }
 
 table { border-spacing: 0; }
 tbody tr:nth-child(odd) { background-color: var(--c-bg-tint); }
+
+.card {
+  background-color: var(--c-bg-tint);
+  border: 1px solid var(--c-bg-shade);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}

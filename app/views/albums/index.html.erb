@@ -1,42 +1,46 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Albums</h1>
+<span>
+  Sort:
+  <%= link_to('Name', albums_path(:order_by => 'album')) %>
+  <%= link_to('\\', albums_path(:order_by => 'album_d')) %>
+  |
+  <%= link_to('Artist', albums_path(:order_by => 'artist')) %>
+  <%= link_to('\\', albums_path(:order_by => 'artist_d')) %>
+</span>
 
-<table>
-  <thead>
-    <tr>
-      <th>
-        <%= link_to('Name', albums_path(:order_by => 'album')) %>
-        <%= link_to('\\', albums_path(:order_by => 'album_d')) %>
-      </th>
-      <th>
-        <%= link_to('Artist', albums_path(:order_by => 'artist')) %>
-        <%= link_to('\\', albums_path(:order_by => 'artist_d')) %>
-      </th>
-      <th>First Suggested</th>
-      <th>Recommendations</th>
-      <th>Sources</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
+<% @albums.each do |album| %>
+  <div class='card'>
+    <h2>
+      <%= link_to(album.name, album) %>
+    </h2>
 
-  <tbody>
-    <% @albums.each do |album| %>
-      <tr>
-        <td><%= link_to(album.name, album) %></td>
-        <td><%= link_to(album.artist.name, artist_path(album.artist)) %></td>
-        <td><%= album.recommendations.first.created_at.strftime('%Y-%m-%d') if album.recommendations.length > 0 %></td>
-        <td><%= album.recommendations.length %></td>
-        <td><%= album.sources.length %></td>
+    <span>Artist: <%= link_to(album.artist.name, artist_path(album.artist)) %></span>
+    <span> | </span>
 
-        <% if current_user&.role == 'admin' %>
-          <td><%= link_to('Edit', edit_album_path(album), class: 'danger') %></td>
-          <td><%= link_to('Destroy', album, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %></td>
-        <% end %>
-      </tr>
+    <span>
+      Recs:
+      <%= album.recommendations.length %> since
+      <%= album.recommendations.first.created_at.strftime('%Y-%m-%d') if album.recommendations.length > 0 %>
+    </span>
+    <span> | </span>
+
+    <span>Sources: <%= album.sources.length %></span>
+    <span> | </span>
+
+    <span>Plays: <%= album.plays.length %></span>
+
+    <% if current_user&.role == 'admin' %>
+      <span>
+        | <%= link_to('Edit', edit_album_path(album), class: 'danger') %>
+        <%= link_to('Destroy', album, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+      </span>
     <% end %>
-  </tbody>
-</table>
+  </div>
+<% end %>
+
+
 
 <br>
 
