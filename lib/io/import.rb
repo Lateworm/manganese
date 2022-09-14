@@ -12,9 +12,11 @@ bad_rows = []
 
 rows.each_with_index do |row, i|
   if row['Artist'].length > 0 && row['Album'].length > 0 && row['Spotify'].length
-    # based on RecommendationsController#create ... should we just use that??
     artist = Artist.find_or_create_by(name: row['Artist'])
     album = Album.find_or_create_by(name: row['Album'], artist_id: artist.id)
+    # TODO: create 'data import' user
+    # Index unique on album_id, user_id, and user_name
+    recommendation = Recommendation.find_or_create_by(album_id: album.id, user_id: nil, user_name: row['Username'])
     spotify = Service.find_or_create_by(name: 'Spotify');
     spotify_source = Source.find_or_create_by(service_id: spotify.id, album_id: album.id, url: row['Spotify'])
   else

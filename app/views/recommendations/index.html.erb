@@ -17,7 +17,7 @@
     <% @recommendations.each do |recommendation| %>
       <tr>
         <% # TODO: link to a page about the user %>
-        <td><%= recommendation.user.name %></td>
+        <td><%= recommendation.user ? recommendation.user.name : recommendation.user_name %></td>
         <td><%= link_to(recommendation.album.name, album_path(recommendation.album)) %></td>
         <td><%= link_to(recommendation.album.artist.name, artist_path(recommendation.album.artist)) %></td>
         <td><%= recommendation.created_at.strftime('%Y-%m-%d') %></td>

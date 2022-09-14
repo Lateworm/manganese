@@ -19,7 +19,7 @@
 <p><strong>Recommended By</strong></p>
 <ul>
   <% @album.recommendations.each do |rec| %>
-    <li><%= rec.user.name %></li>
+    <li><%= rec.user ? rec.user.name : "#{rec.user_name} (via data import)" %></li>
   <% end %>
 </ul>
 
