@@ -17,15 +17,15 @@
 body {
   margin: 0;
 
-  background-color: var(--c-bg);
-  color: var(--c-fg);
+  background-color: var(--c-bg-main);
+  color: var(--c-fg-main);
   /* TODO: font-size: 16px; */
 }
 
 nav {
   padding: 1rem;
-  background-color: var(--c-bg-tint);
-  border-bottom: 1px solid var(--c-bg-shade);
+  background-color: var(--c-bg-alt);
+  border-bottom: 1px solid var(--c-border);
 }
 
 main {
@@ -33,9 +33,9 @@ main {
 }
 
 input, button {
-  border: 1px solid var(--c-bg-shade);
-  background-color: var(--c-bg-tint);
-  color: var(--c-fg);
+  border: 1px solid var(--c-border);
+  background-color: var(--c-bg-interaction);
+  color: var(--c-fg-main);
   font-size: 1rem;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
@@ -52,21 +52,19 @@ th { text-align: initial }
 a, a:visited { color: var(--c-link); }
 a:hover { 
   color: var(--c-link);
-  background-color: var(--c-bg-tint);
+  background-color: transparent; /* resetting from Rails style */
   border-radius: 0.25rem;
 }
 
 h2 a:not(:hover) { text-decoration: none; }
 
-.danger, .danger:visited { color: var(--c-neg); }
+.danger,
+.danger:hover,
+.danger:visited { color: var(--c-neg); }
 
 table { border-spacing: 0; }
-tbody tr:nth-child(odd) { background-color: var(--c-bg-tint); }
+tbody tr:nth-child(odd) { background-color: var(--c-bg-alt); }
 
-.card {
-  background-color: var(--c-bg-tint);
-  border: 1px solid var(--c-bg-shade);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  margin-top: 1rem;
-}
+/* Variable wrappers */
+.c-border { color: var(--c-border); }
+.c-fg-alt { color: var(--c-fg-alt); }

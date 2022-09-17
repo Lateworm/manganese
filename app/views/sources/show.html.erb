@@ -15,5 +15,8 @@
   <%= @source.service.name %>
 </p>
 
-<%= link_to('Edit | ', edit_source_path(@source)) if current_user&.role == 'admin' %>
+<% if current_user&.role == 'admin' %>
+  <%= link_to('Edit', edit_source_path(@source)) %>
+  <span class='c-fg-alt'> | </span>
+<% end %>
 <%= link_to('Back', sources_path) %>

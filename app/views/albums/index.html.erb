@@ -1,47 +1,44 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Albums</h1>
-<span>
+
+<p>
+  <%= link_to('New Album', new_album_path, class: 'danger') if current_user&.role == 'admin' %>
+</p>
+
+<p>
   Sort:
   <%= link_to('Name', albums_path(:order_by => 'album')) %>
   <%= link_to('\\', albums_path(:order_by => 'album_d')) %>
-  |
+  <span class='c-fg-alt'> | </span>
   <%= link_to('Artist', albums_path(:order_by => 'artist')) %>
   <%= link_to('\\', albums_path(:order_by => 'artist_d')) %>
-</span>
+</p>
 
 <% @albums.each do |album| %>
-  <div class='card'>
-    <h2>
-      <%= link_to(album.name, album) %>
-    </h2>
+  <div class='grid'>
+    <div class='title'>
+      <h2>
+        <%= link_to(album.name, album) %>
+      </h2>
+    </div>
 
-    <span>Artist: <%= link_to(album.artist.name, artist_path(album.artist)) %></span>
-    <span> | </span>
-
-    <span>
+    <div class='meta'>Artist: <%= link_to(album.artist.name, artist_path(album.artist)) %></div>
+    <div class='meta'>
       Recs:
       <%= album.recommendations.length %> since
       <%= album.recommendations.first.created_at.strftime('%Y-%m-%d') if album.recommendations.length > 0 %>
-    </span>
-    <span> | </span>
-
-    <span>Sources: <%= album.sources.length %></span>
-    <span> | </span>
-
-    <span>Plays: <%= album.plays.length %></span>
+    </div>
+    <div class='meta'>Sources: <%= album.sources.length %></div>
+    <div class='meta'>Plays: <%= album.plays.length %></div>
 
     <% if current_user&.role == 'admin' %>
-      <span>
-        | <%= link_to('Edit', edit_album_path(album), class: 'danger') %>
+      <div>
+        <%= link_to('Edit', edit_album_path(album), class: 'danger') %>
+        <span class='c-fg-alt'> | </span>
         <%= link_to('Destroy', album, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
-      </span>
+      </div>
+
     <% end %>
   </div>
 <% end %>
-
-
-
-<br>
-
-<%= link_to('New Album', new_album_path) if current_user&.role == 'admin' %>
