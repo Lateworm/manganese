@@ -14,7 +14,7 @@
   padding-bottom: 1rem;
 
   &:nth-child(even) { background-color: var(--c-bg-alt); }
-  // TODO: last child bottom border
+  &:last-of-type { border-bottom: 1px solid var(--c-border); }
 
   > div {
     padding: 0 1rem;

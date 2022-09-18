@@ -3,6 +3,8 @@ class AlbumsController < ApplicationController
 
   # GET /albums or /albums.json
   def index
+    page_size = 32
+    offset = albums_params[:page] ? (albums_params[:page].to_i - 1) * page_size : 0 
     order_clauses = {
       'artist' => 'artists.name',
       'artist_d' => 'artists.name DESC',
@@ -11,9 +13,13 @@ class AlbumsController < ApplicationController
     }
     
     if albums_params['order_by'] && order_clauses[albums_params['order_by']]
-      @albums = Album.joins(:artist).order(order_clauses[albums_params['order_by']])
+      @albums = Album
+        .joins(:artist)
+        .order(order_clauses[albums_params['order_by']])
+        .limit(page_size).offset(offset)
     else
-      @albums = Album.all
+      @albums = Album
+        .limit(page_size).offset(offset)
     end
   end
 
@@ -101,6 +107,6 @@ class AlbumsController < ApplicationController
     end
 
     def albums_params
-      params.permit(:order_by)
+      params.permit(:order_by, :page)
     end
 end
