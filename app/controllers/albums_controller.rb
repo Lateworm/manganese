@@ -1,10 +1,11 @@
 class AlbumsController < ApplicationController
   before_action :set_album, only: %i[ show edit update destroy ]
 
+  PAGE_SIZE = 16
+
   # GET /albums or /albums.json
   def index
-    page_size = 32
-    offset = albums_params[:page] ? (albums_params[:page].to_i - 1) * page_size : 0 
+    offset = albums_params[:page] ? (albums_params[:page].to_i - 1) * PAGE_SIZE : 0 
     order_clauses = {
       'artist' => 'artists.name',
       'artist_d' => 'artists.name DESC',
@@ -16,10 +17,15 @@ class AlbumsController < ApplicationController
       @albums = Album
         .joins(:artist)
         .order(order_clauses[albums_params['order_by']])
-        .limit(page_size).offset(offset)
+        .limit(PAGE_SIZE).offset(offset)
+    elsif albums_params[:search]
+      @albums = Album
+        .where("name ILIKE ?", "%#{albums_params[:search]}%")
+        .order(order_clauses['album'])
+        .limit(PAGE_SIZE).offset(offset)
     else
       @albums = Album
-        .limit(page_size).offset(offset)
+        .limit(PAGE_SIZE).offset(offset)
     end
   end
 
@@ -95,6 +101,11 @@ class AlbumsController < ApplicationController
     end
   end
 
+  def page_size
+    PAGE_SIZE
+  end
+  helper_method :page_size
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_album
@@ -107,6 +118,6 @@ class AlbumsController < ApplicationController
     end
 
     def albums_params
-      params.permit(:order_by, :page)
+      params.permit(:order_by, :page, :search)
     end
 end

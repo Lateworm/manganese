@@ -2,9 +2,23 @@
 
 <h1>Albums</h1>
 
+<% albums_params = params.permit(:order_by, :page, :search) %>
+
 <p>
   <%= link_to('New Album', new_album_path, class: 'danger') if current_user&.role == 'admin' %>
 </p>
+
+<% page_curr = params[:page] || 1 %>
+<% page_prev = page_curr.to_i - 1 %>
+<% page_next = page_curr.to_i + 1 %>
+<% page_prev_params = albums_params.merge(:page => page_prev) %>
+<% page_next_params = albums_params.merge(:page => page_next) %>
+
+<%= form_tag(albums_path, :method => 'get') do %>
+  <%= label_tag(:search, 'Search') %>
+  <%= text_field_tag(:search, params[:search]) %>
+  <%= submit_tag('Search', :name => nil) %>
+<% end %>
 
 <p>
   Sort:
@@ -15,48 +29,48 @@
   <%= link_to('\\', albums_path(:order_by => 'artist_d')) %>
 </p>
 
-<% @albums.each do |album| %>
-  <div class='grid'>
-    <div class='title'>
-      <h2>
-        <%= link_to(album.name, album) %>
-      </h2>
-    </div>
-
-    <div class='meta'>Artist: <%= link_to(album.artist.name, artist_path(album.artist)) %></div>
-    <div class='meta'>
-      Recs:
-      <%= album.recommendations.length %> since
-      <%= album.recommendations.first.created_at.strftime('%Y-%m-%d') if album.recommendations.length > 0 %>
-    </div>
-    <div class='meta'>Sources: <%= album.sources.length %></div>
-    <div class='meta'>Plays: <%= album.plays.length %></div>
-
-    <% if current_user&.role == 'admin' %>
-      <div>
-        <%= link_to('Edit', edit_album_path(album), class: 'danger') %>
-        <span class='c-fg-alt'> | </span>
-        <%= link_to('Destroy', album, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+<% if @albums.empty? %>
+ <p><strong>No Results</strong></p>
+<% else %>
+  <% @albums.each do |album| %>
+    <div class='grid'>
+      <div class='title'>
+        <h2>
+          <%= link_to(album.name, album) %>
+        </h2>
       </div>
 
-    <% end %>
-  </div>
-<% end %>
+      <div class='meta'><strong>Artist:</strong> <%= link_to(album.artist.name, artist_path(album.artist)) %></div>
+      <div class='meta'>
+        <strong>Reccomendations:</strong>
+        <%= album.recommendations.length %> since
+        <%= album.recommendations.first.created_at.strftime('%Y-%m-%d') if album.recommendations.length > 0 %>
+      </div>
+      <div class='meta'><strong>Sources:</strong> <%= album.sources.length %></div>
+      <div class='meta'><strong>Plays:</strong> <%= album.plays.length %></div>
 
-<% page_curr = params[:page] || 1 %>
-<% page_prev = page_curr.to_i - 1 %>
-<% page_next = page_curr.to_i + 1 %>
-<% page_prev_params = {:order_by => params[:order_by]}.merge(:page => page_prev) %>
-<% page_next_params = {:order_by => params[:order_by]}.merge(:page => page_next) %>
+      <% if current_user&.role == 'admin' %>
+        <div>
+          <%= link_to('Edit', edit_album_path(album), class: 'danger') %>
+          <span class='c-fg-alt'> | </span>
+          <%= link_to('Destroy', album, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+        </div>
 
-<p>
-  <% if page_prev > 0 %>
-    <%= link_to(page_prev, albums_path(page_prev_params)) %>
-    <span class='c-fg-alt'> | </span>
+      <% end %>
+    </div>
   <% end %>
 
-  Page <%= page_curr %>
+  <% if @albums.length == page_size %>
+    <p>
+      <% if page_prev > 0 %>
+        <%= link_to(page_prev, albums_path(page_prev_params)) %>
+        <span class='c-fg-alt'> | </span>
+      <% end %>
 
-  <span class='c-fg-alt'> | </span>
-  <%= link_to(page_next, albums_path(page_next_params)) %>
-</p>
+      Page <%= page_curr %>
+
+      <span class='c-fg-alt'> | </span>
+      <%= link_to(page_next, albums_path(page_next_params)) %>
+    </p>
+  <% end %>
+<% end %>
