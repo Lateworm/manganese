@@ -2,33 +2,35 @@
 
 <h1>Artists</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>
-        <%= link_to('Name', artists_path(:order_by => 'artist')) %>
-        <%= link_to('\\', artists_path(:order_by => 'artist_d')) %>
-      </th>
-      <th>Albums</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
+<p>
+  <%= link_to('New Artist', new_artist_path) if current_user&.role == 'admin' %>
+</p>
 
-  <tbody>
-    <% @artists.each do |artist| %>
-      <tr>
-        <td><%= link_to artist.name, artist %></td>
-        <td><%= artist.albums.length %></td>
+<p>
+  <strong>Sort:</strong>
+  <%= link_to('Name', artists_path(:order_by => 'artist')) %>
+  <%= link_to('\\', artists_path(:order_by => 'artist_d')) %>
+</p>
 
-        <% if current_user&.role == 'admin' %>
-          <td><%= link_to('Edit', edit_artist_path(artist), class: 'danger') %></td>
-          <td><%= link_to('Destroy', artist, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %></td>
-        <% end %>
-      </tr>
+
+    
+
+<% @artists.each do |artist| %>
+  <div class='grid'>
+    <div class='title'>
+      <h2>
+        <%= link_to artist.name, artist %>
+      </h2>
+    </div>
+
+    <div class='meta'><strong>Albums:</strong> <%= artist.albums.length %></div>
+
+    <% if current_user&.role == 'admin' %>
+      <div>
+        <%= link_to('Edit', edit_artist_path(artist), class: 'danger') %>
+        <span class='c-fg-alt'> | </span>
+        <%= link_to('Destroy', artist, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+      </div>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to('New Artist', new_artist_path) if current_user&.role == 'admin' %>
+  </div>
+<% end %>

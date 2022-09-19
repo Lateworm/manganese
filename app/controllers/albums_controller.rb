@@ -12,21 +12,15 @@ class AlbumsController < ApplicationController
       'album' => 'albums.name',
       'album_d' => 'albums.name DESC',
     }
+
+    query = 'Album'
+    query << '.joins(:artist)' if albums_params['order_by'] && order_clauses[albums_params['order_by']]
+    query << '.where("albums.name ILIKE ?", "%#{albums_params[:search]}%")' if albums_params[:search]
+    query << '.order(order_clauses[albums_params[:order_by]])' if albums_params['order_by'] && order_clauses[albums_params['order_by']]
+    query << '.limit(PAGE_SIZE)'
+    query << '.offset(offset)'
     
-    if albums_params['order_by'] && order_clauses[albums_params['order_by']]
-      @albums = Album
-        .joins(:artist)
-        .order(order_clauses[albums_params['order_by']])
-        .limit(PAGE_SIZE).offset(offset)
-    elsif albums_params[:search]
-      @albums = Album
-        .where("name ILIKE ?", "%#{albums_params[:search]}%")
-        .order(order_clauses['album'])
-        .limit(PAGE_SIZE).offset(offset)
-    else
-      @albums = Album
-        .limit(PAGE_SIZE).offset(offset)
-    end
+    @albums = eval(query)
   end
 
   # GET /albums/1 or /albums/1.json
@@ -104,7 +98,14 @@ class AlbumsController < ApplicationController
   def page_size
     PAGE_SIZE
   end
+
+  def albums_params
+    params.permit(:order_by, :page, :search)
+  end
+
+  # Expose variables / methods to the view
   helper_method :page_size
+  helper_method :albums_params
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -115,9 +116,5 @@ class AlbumsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def album_params
       params.require(:album).permit(:name, :artist_name)
-    end
-
-    def albums_params
-      params.permit(:order_by, :page, :search)
     end
 end

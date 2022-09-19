@@ -2,31 +2,23 @@
 
 <h1>Albums</h1>
 
-<% albums_params = params.permit(:order_by, :page, :search) %>
-
 <p>
   <%= link_to('New Album', new_album_path, class: 'danger') if current_user&.role == 'admin' %>
 </p>
 
-<% page_curr = params[:page] || 1 %>
-<% page_prev = page_curr.to_i - 1 %>
-<% page_next = page_curr.to_i + 1 %>
-<% page_prev_params = albums_params.merge(:page => page_prev) %>
-<% page_next_params = albums_params.merge(:page => page_next) %>
-
 <%= form_tag(albums_path, :method => 'get') do %>
-  <%= label_tag(:search, 'Search') %>
   <%= text_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:order_by, params[:order_by]) %>
   <%= submit_tag('Search', :name => nil) %>
 <% end %>
 
 <p>
   Sort:
-  <%= link_to('Name', albums_path(:order_by => 'album')) %>
-  <%= link_to('\\', albums_path(:order_by => 'album_d')) %>
+  <%= link_to('Name', albums_path(albums_params.merge(:order_by => 'album', :page => 1))) %>
+  <%= link_to('\\', albums_path(albums_params.merge(:order_by => 'album_d', :page => 1))) %>
   <span class='c-fg-alt'> | </span>
-  <%= link_to('Artist', albums_path(:order_by => 'artist')) %>
-  <%= link_to('\\', albums_path(:order_by => 'artist_d')) %>
+  <%= link_to('Artist', albums_path(albums_params.merge(:order_by => 'artist', :page => 1))) %>
+  <%= link_to('\\', albums_path(albums_params.merge(:order_by => 'artist_d', :page => 1))) %>
 </p>
 
 <% if @albums.empty? %>
@@ -55,22 +47,25 @@
           <span class='c-fg-alt'> | </span>
           <%= link_to('Destroy', album, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
         </div>
-
       <% end %>
     </div>
   <% end %>
 
+  <% page_curr = params[:page] || 1 %>
+  <% page_prev = page_curr.to_i - 1 %>
+  <% page_next = page_curr.to_i + 1 %>
+
   <% if @albums.length == page_size %>
     <p>
       <% if page_prev > 0 %>
-        <%= link_to(page_prev, albums_path(page_prev_params)) %>
+        <%= link_to(page_prev, albums_path(albums_params.merge(:page => page_prev))) %>
         <span class='c-fg-alt'> | </span>
       <% end %>
 
       Page <%= page_curr %>
 
       <span class='c-fg-alt'> | </span>
-      <%= link_to(page_next, albums_path(page_next_params)) %>
+      <%= link_to(page_next, albums_path(albums_params.merge(:page => page_next))) %>
     </p>
   <% end %>
 <% end %>
