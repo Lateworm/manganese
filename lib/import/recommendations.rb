@@ -1,5 +1,5 @@
 # rails c
-# load 'lib/io/import.rb'
+# load 'lib/import/recommendations.rb'
 
 # CSV MUST BE SHRUNK!!!!
 # TODO: trim whitespace off all fields
@@ -7,7 +7,7 @@
 # TODO: find duplicates / data clenaup suite
 
 require 'csv'
-rows = CSV.parse(File.read('lib/io/recommendations.csv'), headers: true)
+rows = CSV.parse(File.read('lib/import/recommendations.csv'), headers: true)
 bad_rows = []
 
 rows.each_with_index do |row, i|
