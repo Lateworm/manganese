@@ -14,6 +14,38 @@
  *= require_self
  */
 
+ @media (prefers-color-scheme: dark) {
+   /* Master of Reality */
+  :root {
+    --c-fg-main: hsl(220deg 7% 94%);
+    --c-fg-alt: hsl(220deg 7% 74%);
+
+    --c-bg-main: hsl(220deg 7% 23%);
+    --c-bg-alt: hsl(220deg 7% 25%);
+    --c-bg-interaction: hsl(220deg 7% 20%);
+
+    --c-border: hsl(220deg 7% 15%);
+    --c-link: hsl(100deg 43% 75%);
+    --c-neg: hsl(300deg 80% 69%);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  /* Abacab */
+  :root {
+    --c-fg-main: hsl(0deg 0% 13%);
+    --c-fg-alt: hsl(0deg 0% 33%);
+    
+    --c-bg-alt: hsl(0deg 0% 93%);
+    --c-bg-main: hsl(0deg 0% 95%);
+    --c-bg-interaction: hsl(0deg 0% 98%);
+
+    --c-border: hsl(0deg 0% 83%);
+    --c-link: hsl(240deg 60% 50%);
+    --c-neg: hsl(0deg 60% 50%);
+  }
+}
+
 body {
   margin: 0;
 
