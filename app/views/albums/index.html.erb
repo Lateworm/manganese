@@ -3,7 +3,11 @@
 <h1>Albums</h1>
 
 <p>
-  <%= link_to('New Album', new_album_path, class: 'danger') if current_user&.role == 'admin' %>
+  <% if current_user&.role == 'admin' %>
+    <%= link_to('New Album', new_album_path, class: 'danger')  %>
+    <span>|</span>
+  <% end %>
+  <%= link_to('🤘 Recommend an Album ✌️', new_recommendation_path) if user_signed_in? %>
 </p>
 
 <%= form_tag(albums_path, :method => 'get') do %>

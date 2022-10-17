@@ -30,5 +30,8 @@
   <% end %>
 </ul>
 
-<%= link_to('Edit |', edit_album_path(@album)) if current_user&.role == 'admin' %>
+<% if current_user&.role == 'admin' %>
+  <%= link_to('Edit', edit_album_path(@album), class: 'danger') %>
+  <span>|</span>
+<% end %>
 <%= link_to 'Back to Albums', albums_path %>

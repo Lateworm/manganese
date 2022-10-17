@@ -6,6 +6,7 @@ class AlbumsController < ApplicationController
   # GET /albums or /albums.json
   def index
     offset = albums_params[:page] ? (albums_params[:page].to_i - 1) * PAGE_SIZE : 0
+    order = albums_params['order_by'] && order_clauses[albums_params['order_by']] ? order_clauses[albums_params[:order_by]] : 'albums.created_at DESC'
     order_clauses = {
       'artist' => 'artists.name',
       'artist_d' => 'artists.name DESC',
@@ -16,7 +17,7 @@ class AlbumsController < ApplicationController
     query = 'Album'
     query << '.joins(:artist)' if albums_params['order_by'] && order_clauses[albums_params['order_by']]
     query << '.where("albums.name ILIKE ?", "%#{albums_params[:search]}%")' if albums_params[:search]
-    query << '.order(order_clauses[albums_params[:order_by]])' if albums_params['order_by'] && order_clauses[albums_params['order_by']]
+    query << '.order(order)'
     query << '.limit(PAGE_SIZE)'
     query << '.offset(offset)'
     
