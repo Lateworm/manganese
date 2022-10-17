@@ -8,12 +8,15 @@
   <%= @event.started_at %>
 </p>
 
-<p><strong>Plays</strong></p>
+<p><strong>Albums</strong></p>
 <ul>
   <% @event.plays.each do |play| %>
     <li><%= link_to(play.album.artist.name, play.album.artist) %> - <%= link_to(play.album.name, play.album) %></li>
   <% end %>
 </ul>
 
-<%= link_to('Edit', edit_event_path(@event), class: 'danger') if current_user&.role == 'admin' %> |
-<%= link_to('Back', events_path) %>
+<% if current_user&.role == 'admin' %>
+  <%= link_to('Edit', edit_event_path(@event), class: 'danger') if current_user&.role == 'admin' %>
+  <span>|</span>
+<% end %>
+<%= link_to('Back to Events', events_path) %>

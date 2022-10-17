@@ -2,4 +2,9 @@
 
 <%= render 'form', recommendation: @recommendation %>
 
-<%= link_to 'Back', recommendations_path %>
+
+<% if current_user&.role == 'admin' %>
+  <%= link_to 'Back to Recommendation', recommendations_path %>
+  <span>|</span>
+<% end %>
+<%= link_to 'Back to Albums', albums_path %>
