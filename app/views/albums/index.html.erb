@@ -7,7 +7,7 @@
     <%= link_to('New Album', new_album_path, class: 'danger')  %>
     <span>|</span>
   <% end %>
-  <%= link_to('🤘 Recommend an Album ✌️', new_recommendation_path) if user_signed_in? %>
+  <%= link_to('🤘 Recommend an Album', new_recommendation_path) if user_signed_in? %>
 </p>
 
 <%= form_tag(albums_path, :method => 'get') do %>
@@ -41,8 +41,11 @@
       <div class='meta'><strong>Artist:</strong> <%= link_to(album.artist.name, artist_path(album.artist)) %></div>
       <div class='meta'>
         <strong>Reccomendations:</strong>
-        <%= album.recommendations.length %> since
-        <%= album.recommendations.first.created_at.strftime('%Y-%m-%d') if album.recommendations.length > 0 %>
+        <%= album.recommendations.length %>
+        <% if album.recommendations.length > 0 %>
+          since
+          <%= album.recommendations.first.created_at.strftime('%b %d, %Y') %>
+        <% end %>
       </div>
       <div class='meta'><strong>Sources:</strong> <%= album.sources.length %></div>
       <div class='meta'><strong>Plays:</strong> <%= album.plays.length %></div>

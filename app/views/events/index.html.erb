@@ -31,8 +31,16 @@
         </h2>
       </div>
 
-      <div class='meta'><strong>Started at:</strong> <%= event.started_at %></div>
-      <div class='meta'><strong>Albums:</strong> <%= event.plays.length %></div>
+      <div class='meta'><strong>Date:</strong> <%= event.started_at.strftime('%b %d, %Y') %></div>
+      <div class='meta truncate'>
+        <strong>Albums:</strong>
+        (<%= event.plays.length %>)
+        <span>
+          <% event.plays.each do |play, i| %>
+            <%= link_to(play.album.name, play.album) %>
+          <% end %>
+        <span>
+      </div>
 
       <% if current_user&.role == 'admin' %>
         <div>
