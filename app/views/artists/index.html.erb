@@ -3,34 +3,61 @@
 <h1>Artists</h1>
 
 <p>
-  <%= link_to('New Artist', new_artist_path) if current_user&.role == 'admin' %>
+  <%= link_to('New Artist', new_artist_path, class: 'danger') if current_user&.role == 'admin' %>
 </p>
 
+<%= form_tag(artists_path, :method => 'get') do %>
+  <%= text_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:order_by, params[:order_by]) %>
+  <%= submit_tag('Search', :name => nil) %>
+<% end %>
+
+<%# TODO: search needs to be clearable %>
+
 <p>
-  <strong>Sort:</strong>
+  Sort:
   <%= link_to('Name', artists_path(:order_by => 'artist')) %>
   <%= link_to('\\', artists_path(:order_by => 'artist_d')) %>
 </p>
 
-
-    
-
-<% @artists.each do |artist| %>
-  <div class='grid'>
-    <div class='title'>
-      <h2>
-        <%= link_to artist.name, artist %>
-      </h2>
-    </div>
-
-    <div class='meta'><strong>Albums:</strong> <%= artist.albums.length %></div>
-
-    <% if current_user&.role == 'admin' %>
-      <div>
-        <%= link_to('Edit', edit_artist_path(artist), class: 'danger') %>
-        <span class='c-fg-alt'> | </span>
-        <%= link_to('Destroy', artist, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+<% if @artists.empty? %>
+ <p><strong>No Results</strong></p>
+<% else %>
+  <% @artists.each do |artist| %>
+    <div class='grid'>
+      <div class='title'>
+        <h2>
+          <%= link_to artist.name, artist %>
+        </h2>
       </div>
-    <% end %>
-  </div>
+
+      <div class='meta'><strong>Albums:</strong> <%= artist.albums.length %></div>
+
+      <% if current_user&.role == 'admin' %>
+        <div>
+          <%= link_to('Edit', edit_artist_path(artist), class: 'danger') %>
+          <span class='c-fg-alt'> | </span>
+          <%= link_to('Destroy', artist, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>
+
+<% page_curr = params[:page] || 1 %>
+<% page_prev = page_curr.to_i - 1 %>
+<% page_next = page_curr.to_i + 1 %>
+
+  <% if @artists.length == page_size %>
+    <p>
+      <% if page_prev > 0 %>
+        <%= link_to(page_prev, artists_path(artists_params.merge(:page => page_prev))) %>
+        <span class='c-fg-alt'> | </span>
+      <% end %>
+
+      Page <%= page_curr %>
+
+      <span class='c-fg-alt'> | </span>
+      <%= link_to(page_next, artists_path(artists_params.merge(:page => page_next))) %>
+    </p>
+  <% end %>

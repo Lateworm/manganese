@@ -1,19 +1,23 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: %i[ show edit update destroy ]
 
+  PAGE_SIZE = 16
+
   # GET /artists or /artists.json
   def index
+    offset = artists_params[:page] ? (artists_params[:page].to_i - 1) * PAGE_SIZE : 0 
     order_clauses = {
       'artist' => 'artists.name',
       'artist_d' => 'artists.name DESC',
-
     }
 
-    if artists_params['order_by'] && order_clauses[artists_params['order_by']]
-      @artists = Artist.order(order_clauses[artists_params['order_by']])
-    else
-      @artists = Artist.all
-    end
+    query = 'Artist'
+    query << '.where("artists.name ILIKE ?", "%#{artists_params[:search]}%")' if artists_params[:search]
+    query << '.order(order_clauses[artists_params[:order_by]])' if artists_params['order_by'] && order_clauses[artists_params['order_by']]
+    query << '.limit(PAGE_SIZE)'
+    query << '.offset(offset)'
+
+    @artists = eval(query)
   end
 
   # GET /artists/1 or /artists/1.json
@@ -76,6 +80,18 @@ class ArtistsController < ApplicationController
     end
   end
 
+  def page_size
+    PAGE_SIZE
+  end
+
+  def artists_params
+    params.permit(:order_by, :page, :search)
+  end
+
+  # Expose variables / methods to the view
+  helper_method :page_size
+  helper_method :artists_params
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_artist
@@ -85,9 +101,5 @@ class ArtistsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def artist_params
       params.require(:artist).permit(:name)
-    end
-
-    def artists_params
-      params.permit(:order_by)
     end
 end

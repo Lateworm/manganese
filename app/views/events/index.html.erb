@@ -6,23 +6,59 @@
   <%= link_to('New Event', new_event_path, class: 'danger') if current_user&.role == 'admin' %>
 </p>
 
-<% @events.each do |event| %>
-  <div class='grid'>
-    <div class='title'>
-      <h2>
-        <%= link_to(event.name, event) %>
-      </h2>
-    </div>
+<%= form_tag(events_path, :method => 'get') do %>
+  <%= text_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:order_by, params[:order_by]) %>
+  <%= submit_tag('Search', :name => nil) %>
+<% end %>
 
-    <div class='meta'><strong>Started at:</strong> <%= event.started_at %></div>
-    <div class='meta'><strong>Albums:</strong> <%= event.plays.length %></div>
+<%# TODO: search needs to be clearable %>
 
-    <% if current_user&.role == 'admin' %>
-      <div>
-        <%= link_to('Edit', edit_event_path(event), class: 'danger') %>
-        <span class='c-fg-alt'> | </span>
-        <%= link_to('Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+<p>
+  Sort:
+  <%= link_to('Name', events_path(events_params.merge(:order_by => 'event', :page => 1))) %>
+  <%= link_to('\\', events_path(events_params.merge(:order_by => 'event_d', :page => 1))) %>
+</p>
+
+<% if @events.empty? %>
+ <p><strong>No Results</strong></p>
+<% else %>
+  <% @events.each do |event| %>
+    <div class='grid'>
+      <div class='title'>
+        <h2>
+          <%= link_to(event.name, event) %>
+        </h2>
       </div>
+
+      <div class='meta'><strong>Started at:</strong> <%= event.started_at %></div>
+      <div class='meta'><strong>Albums:</strong> <%= event.plays.length %></div>
+
+      <% if current_user&.role == 'admin' %>
+        <div>
+          <%= link_to('Edit', edit_event_path(event), class: 'danger') %>
+          <span class='c-fg-alt'> | </span>
+          <%= link_to('Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }, class: 'danger') %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<% page_curr = params[:page] || 1 %>
+<% page_prev = page_curr.to_i - 1 %>
+<% page_next = page_curr.to_i + 1 %>
+
+<% if @events.length == page_size %>
+  <p>
+    <% if page_prev > 0 %>
+      <%= link_to(page_prev, events_path(events_params.merge(:page => page_prev))) %>
+      <span class='c-fg-alt'> | </span>
     <% end %>
-  </div>
+
+    Page <%= page_curr %>
+
+    <span class='c-fg-alt'> | </span>
+    <%= link_to(page_next, events_path(events_params.merge(:page => page_next))) %>
+  </p>
 <% end %>

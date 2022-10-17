@@ -1,9 +1,23 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
 
+  PAGE_SIZE = 16
+
   # GET /events or /events.json
   def index
-    @events = Event.all
+    offset = events_params[:page] ? (events_params[:page].to_i - 1) * PAGE_SIZE : 0
+    order_clauses = {
+      'artist' => 'events.name',
+      'artist_d' => 'events.name DESC',
+    }
+
+    query = 'Event'
+    query << '.where("events.name ILIKE ?", "%#{events_params[:search]}%")' if events_params[:search]
+    query << '.order(order_clauses[events_params[:order_by]])' if events_params['order_by'] && order_clauses[events_params['order_by']]
+    query << '.limit(PAGE_SIZE)'
+    query << '.offset(offset)'
+
+    @events = eval(query)
   end
 
   # GET /events/1 or /events/1.json
@@ -56,6 +70,18 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def page_size
+    PAGE_SIZE
+  end
+
+  def events_params
+    params.permit(:order_by, :page, :search)
+  end
+
+  # Expose variables / methods to the view
+  helper_method :page_size
+  helper_method :events_params
 
   private
     # Use callbacks to share common setup or constraints between actions.

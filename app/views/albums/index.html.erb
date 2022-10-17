@@ -12,6 +12,8 @@
   <%= submit_tag('Search', :name => nil) %>
 <% end %>
 
+<%# TODO: search needs to be clearable %>
+
 <p>
   Sort:
   <%= link_to('Name', albums_path(albums_params.merge(:order_by => 'album', :page => 1))) %>

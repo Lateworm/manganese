@@ -5,7 +5,7 @@ class AlbumsController < ApplicationController
 
   # GET /albums or /albums.json
   def index
-    offset = albums_params[:page] ? (albums_params[:page].to_i - 1) * PAGE_SIZE : 0 
+    offset = albums_params[:page] ? (albums_params[:page].to_i - 1) * PAGE_SIZE : 0
     order_clauses = {
       'artist' => 'artists.name',
       'artist_d' => 'artists.name DESC',
