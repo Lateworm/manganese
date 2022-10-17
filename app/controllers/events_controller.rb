@@ -6,14 +6,17 @@ class EventsController < ApplicationController
   # GET /events or /events.json
   def index
     offset = events_params[:page] ? (events_params[:page].to_i - 1) * PAGE_SIZE : 0
+    order = events_params['order_by'] && order_clauses[events_params['order_by']] ? events_params['order_by'] : 'date_desc'
+
     order_clauses = {
       'artist' => 'events.name',
       'artist_d' => 'events.name DESC',
+      'date_desc' => 'events.started_at DESC',
     }
 
     query = 'Event'
     query << '.where("events.name ILIKE ?", "%#{events_params[:search]}%")' if events_params[:search]
-    query << '.order(order_clauses[events_params[:order_by]])' if events_params['order_by'] && order_clauses[events_params['order_by']]
+    query << '.order(order_clauses[order])'
     query << '.limit(PAGE_SIZE)'
     query << '.offset(offset)'
 

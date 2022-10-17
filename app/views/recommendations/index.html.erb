@@ -2,6 +2,8 @@
 
 <h1>Recommendations</h1>
 
+<p><%= link_to('New Recommendation', new_recommendation_path) if user_signed_in? %></p>
+
 <table>
   <thead>
     <tr>
@@ -33,6 +35,20 @@
   </tbody>
 </table>
 
-<br>
+<% page_curr = params[:page] || 1 %>
+<% page_prev = page_curr.to_i - 1 %>
+<% page_next = page_curr.to_i + 1 %>
 
-<%= link_to('New Recommendation', new_recommendation_path) if user_signed_in? %>
+<% if @recommendations.length == page_size %>
+  <p>
+    <% if page_prev > 0 %>
+      <%= link_to(page_prev, recommendations_path(params_index.merge(:page => page_prev))) %>
+      <span class='c-fg-alt'> | </span>
+    <% end %>
+
+    Page <%= page_curr %>
+
+    <span class='c-fg-alt'> | </span>
+    <%= link_to(page_next, recommendations_path(params_index.merge(:page => page_next))) %>
+  </p>
+<% end %>

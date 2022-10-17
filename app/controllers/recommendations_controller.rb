@@ -1,9 +1,19 @@
 class RecommendationsController < ApplicationController
   before_action :set_recommendation, only: %i[ show edit update destroy ]
 
+  PAGE_SIZE = 16
+
   # GET /recommendations or /recommendations.json
   def index
-    @recommendations = Recommendation.all
+    offset = params_index[:page] ? (params_index[:page].to_i - 1) * PAGE_SIZE : 0
+
+    query = 'Recommendation'
+    query << ".order('recommendations.created_at DESC')"
+    # TODO: order by some sort of submitted_at to get better accuracy on imports? Is the data available?
+    query << '.limit(PAGE_SIZE)'
+    query << '.offset(offset)'
+
+    @recommendations = eval(query)
   end
 
   # GET /recommendations/1 or /recommendations/1.json
@@ -80,6 +90,18 @@ class RecommendationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def page_size
+    PAGE_SIZE
+  end
+
+  def params_index
+    params.permit(:page)
+  end
+
+  # Expose variables / methods to the view
+  helper_method :page_size
+  helper_method :params_index
 
   private
     # Use callbacks to share common setup or constraints between actions.
